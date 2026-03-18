@@ -333,6 +333,21 @@ fn ui(f: &mut Frame, app: &App) {
                 .split(layout[2]);
 
             // Левая часть - подсказки по управлению
+            let left_layout = Layout::default()
+                .direction(Direction::Vertical)
+                .constraints([
+                    Constraint::Length(4),
+                    Constraint::Length(4),
+                ].as_ref())
+                .split(footer_layout[0]);
+            let project_info = vec![
+                Line::from(""),
+                Line::from("Проект: github.com/Kart-dxmn/rust-tui-forum-tsu "),
+                ];
+            let project_paragraph = Paragraph::new(project_info)
+                .alignment(Alignment::Right)
+                .style(Style::default().fg(Color::Blue).add_modifier(Modifier::BOLD));
+            f.render_widget(project_paragraph, left_layout[1]);   
             let help_text = vec![
                 Line::from("Управление:"),
                 Line::from("↑/↓ - прокрутка"),
@@ -340,28 +355,11 @@ fn ui(f: &mut Frame, app: &App) {
                 Line::from("Home/End - начало/конец"),
             ];
 
-            let chunks = Layout::default()
-                .direction(Direction::Vertical)
-                .constraints(
-                    [
-                        Constraint::Length(5), // Информация о проекте
-                        Constraint::Min(1),    // Разделитель
-                        Constraint::Length(3), // Информация об управлении
-                        Constraint::Length(3), // Информация о получателе/отправителе
-                    ]
-                    .as_ref(),
-                )
-                .split(inner);
-            let info_project = vec![
-                Line::from(""),
-                Line::from("Проект:"),
-                Line::from(""),
-                Line::from(""),
-            ];
+            
             let help_paragraph = Paragraph::new(help_text)
                 .alignment(Alignment::Left)
                 .style(Style::default().fg(Color::Gray));
-            f.render_widget(help_paragraph, footer_layout[0]);
+            f.render_widget(help_paragraph, left_layout[0]);
 
             // Правая часть - Кому/От кого
             let right_text = vec![
